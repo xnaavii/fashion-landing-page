@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+  --font-color-grey: #212529;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+}
+
+#image-slider {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  overflow: hidden;
+}
+
+.text-container {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+h2.title {
+  font-family: Helvetica !important;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+p.description {
+  font-family: 'Inter' !important;
+  font-size: 20px;
+  color: var(--font-color-grey);
+}
+
+.image-container {
+  width: 100%;
+  line-height: 0;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  #image-slider {
+    grid-template-columns: 1fr 1fr;
+    height: 100dvh;
+  }
+
+  .image-container img {
+    height: 100%;
+  }
+}
