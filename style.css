@@ -1,7 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 :root {
-  --font-color-grey: #212529;
+  --gray-900: #212529;
+  --gray-800: #343a40;
+  --gray-700: #495057;
+  --gray-600: #868e96;
+  --gray-500: #adb5bd;
+  --gray-400: #ced4da;
+  --gray-300: #dee2e6;
+  --gray-200: #e9ecef;
+  --gray-100: #f1f3f5;
+  --gray: #f8f9fa;
   --font-h1: 61px;
   --font-h2: 49px;
   --font-h3: 39px;
@@ -38,23 +47,24 @@ header {
   display: flex;
   align-items: center;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 300;
   text-transform: uppercase;
   padding: 14px;
   height: 20px;
   border-radius: 20px;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: #21252976;
+  color: var(--gray-200);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   transition: 0.05s ease-in;
 }
 
 .nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: #21252987;
 }
 
 .nav-link:active {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: #21252976;
 }
 
 #product-slider {
@@ -72,6 +82,8 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 4px;
+  background-color: #000000;
 }
 
 h2.title {
@@ -79,12 +91,13 @@ h2.title {
   font-weight: 300;
   font-size: var(--font-h6);
   text-transform: uppercase;
+  color: var(--gray-300);
 }
 
 p.description {
   font-family: 'Inter' !important;
   font-size: var(--font-p);
-  color: var(--font-color-grey);
+  color: var(--gray-800);
 }
 
 .image-container {
@@ -112,7 +125,7 @@ p.description {
   translate: -50%;
   width: 16px;
   height: 100px;
-  background-color: rgba(255, 255, 255, 0.266);
+  background-color: #21252976;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: 20px;
@@ -131,20 +144,20 @@ p.description {
 .dot {
   width: 8px;
   height: 8px;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: var(--gray-800);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .dot.active {
-  background-color: #ffffff;
+  background-color: var(--gray-400);
   flex: 1;
   border-radius: 16px;
 }
 
 .dot:hover {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: var(--gray-600);
 }
 
 @media (min-width: 768px) {
