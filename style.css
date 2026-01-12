@@ -2,20 +2,46 @@
 
 :root {
   --font-color-grey: #212529;
+  --font-h1: 61px;
+  --font-h2: 49px;
+  --font-h3: 39px;
+  --font-h4: 31px;
+  --font-h5: 25px;
+  --font-h6: 20px;
+  --font-p: 16px;
+  --font-small: 13px;
 }
 
-body {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  font-size: 16px;
   font-weight: 400;
   font-family: 'Inter', sans-serif;
+  position: relative;
+}
+
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  translate: 50% 50%;
+}
+
+nav ul li {
+  list-style-type: none;
 }
 
 #image-slider {
   display: grid;
   grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
   width: 100%;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -25,40 +51,93 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  box-sizing: border-box;
 }
 
 h2.title {
   font-family: Helvetica !important;
   font-weight: 300;
+  font-size: var(--font-h6);
   text-transform: uppercase;
 }
 
 p.description {
   font-family: 'Inter' !important;
-  font-size: 20px;
+  font-size: var(--font-p);
   color: var(--font-color-grey);
 }
 
 .image-container {
   width: 100%;
+  height: 100%;
   line-height: 0;
+  position: relative;
 }
 
-.image-container img {
+.image {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
   object-fit: cover;
+}
+
+.image {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.slider {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  translate: -50%;
+  width: 16px;
+  height: 100px;
+  background-color: rgba(255, 255, 255, 0.266);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 20px;
+
+  /* Position for inside dots */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  gap: 4px;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background-color: #ffffff;
+  flex: 1;
+  border-radius: 16px;
+}
+
+.dot:hover {
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 @media (min-width: 768px) {
   #image-slider {
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: unset;
     height: 100dvh;
   }
 
+  .slider {
+    translate: -50% -50%;
+  }
+
   .image-container img {
-    height: 100%;
+    height: 100dvh;
   }
 }
