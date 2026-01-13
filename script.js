@@ -83,7 +83,7 @@ window.addEventListener('DOMContentLoaded', function () {
       },
       {
         root: document.querySelector('#slides'),
-        threshold: 0.6,
+        threshold: 0.3,
       }
     );
 
@@ -109,6 +109,7 @@ window.addEventListener('DOMContentLoaded', function () {
       dot.addEventListener('click', () => {
         const index = Number(dot.dataset.index);
         const targetSlide = slides[index];
+        setActiveDot(index);
 
         targetSlide.scrollIntoView({
           behavior: 'smooth',
@@ -119,6 +120,40 @@ window.addEventListener('DOMContentLoaded', function () {
     );
   }
 
+  function renderNewsletterSlide() {
+    const slides = document.querySelector('#slides');
+
+    const html = `<div class="slide newsletter">
+      <form id="newsletter-form">
+        <header id="newsletter-header">
+          <h3>Subscribe to our newsletter</h3>
+          <p>Be the first to know when our products are in stock.</p>
+        </header>
+        <div class="input-group">
+          <label for="email">Enter you email</label>
+          <input id="email" name="email" placeholder="johndoe@email.com" required autocomplete=true />
+        </div>
+        <button type="submit" class="btn">Subscribe</button>
+        </form>
+        <video src="./assets/newsletter-background-video.mp4" autoplay muted loop playsinline></video>
+      </div>  
+      `;
+
+    slides.insertAdjacentHTML('beforeend', html);
+
+    const form = document.querySelector('#newsletter-form');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      document.querySelector('.input-group').innerHTML =
+        '<p class="success-message">Thank you for subscribing!</p>';
+
+      document.querySelector('#newsletter-header').remove();
+      document.querySelector('#newsletter-form button').remove();
+    });
+  }
+
   function render() {
     products.forEach((product) => {
       const formattedPrice = new Intl.NumberFormat('en-IE', {
@@ -127,7 +162,7 @@ window.addEventListener('DOMContentLoaded', function () {
       }).format(product.price);
 
       const html = `
-      <div class="slide" data-product-id=${product.id}>
+      <div class="slide" data-id=${product.id}>
         <div class="text-container">
         <!-- Text Content -->
         <h2 class="title" >${product.name}</h2>
@@ -152,6 +187,7 @@ window.addEventListener('DOMContentLoaded', function () {
   }
 
   render();
+  renderNewsletterSlide();
   renderDots();
   setActiveDot(0);
   observeSlides();
