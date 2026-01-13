@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', function () {
         'A stylish jacket with a lightweight design, perfect for everyday wear.',
       price: 299,
       stock: 0,
-      image: './assets/sirio-7_ZNLVlJchs-unsplash.jpg',
+      image: './assets/images/sirio-7_ZNLVlJchs-unsplash.jpg',
       accent: '#74c0fc',
       fontStyle: null,
     },
@@ -20,7 +20,7 @@ window.addEventListener('DOMContentLoaded', function () {
         'Bold red jacket made from premium materials, featuring a modern fit.',
       price: 299,
       stock: 0,
-      image: './assets/julian-myles-1RbTWZmacKA-unsplash.jpg',
+      image: './assets/images/julian-myles-1RbTWZmacKA-unsplash.jpg',
       accent: '#f03e3e',
       fontStyle: 'Orbitron',
     },
@@ -31,7 +31,7 @@ window.addEventListener('DOMContentLoaded', function () {
         'Sunny yellow casual jacket, perfect for spring and summer outings.',
       price: 299,
       stock: 0,
-      image: './assets/molly-mears-4_90zmmdo_4-unsplash.jpg',
+      image: './assets/images/molly-mears-4_90zmmdo_4-unsplash.jpg',
       accent: '#ffd43b',
       fontStyle: null,
     },
@@ -42,7 +42,7 @@ window.addEventListener('DOMContentLoaded', function () {
         'Classic black leather with a comfortable fit for everyday use.',
       price: 199,
       stock: 0,
-      image: './assets/dom-hill-JqZlSnI2ctA-unsplash.jpg',
+      image: './assets/images/dom-hill-JqZlSnI2ctA-unsplash.jpg',
       accent: '#74c0fc',
       fontStyle: null,
     },
@@ -53,7 +53,7 @@ window.addEventListener('DOMContentLoaded', function () {
         'Jacket that combines style and functionality for any occasion.',
       price: 299,
       stock: 0,
-      image: './assets/jc-gellidon-xDsq3u3ZUqc-unsplash.jpg',
+      image: './assets/images/jc-gellidon-xDsq3u3ZUqc-unsplash.jpg',
       accent: '#f03e3e',
       fontStyle: null,
     },
@@ -135,7 +135,7 @@ window.addEventListener('DOMContentLoaded', function () {
         </div>
         <button type="submit" class="btn">Subscribe</button>
         </form>
-        <video src="./assets/newsletter-background-video.mp4" autoplay muted loop playsinline></video>
+        <video src="./assets/videos/newsletter-background-video.mp4" autoplay muted loop playsinline></video>
       </div>  
       `;
 
