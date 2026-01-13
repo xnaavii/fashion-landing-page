@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', function () {
       id: 4,
       name: 'jeans-004',
       description:
-        'Classic blue denim jeans with a comfortable fit for everyday use.',
+        'Classic denim jeans with a comfortable fit for everyday use.',
       price: 199,
       stock: 0,
       image: './assets/dom-hill-JqZlSnI2ctA-unsplash.jpg',
