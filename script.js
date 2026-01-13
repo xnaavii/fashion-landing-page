@@ -59,9 +59,67 @@ window.addEventListener('DOMContentLoaded', function () {
     },
   ];
 
-  function render() {
-    const slides = document.querySelector('#slides');
+  function setActiveDot(index) {
+    document
+      .querySelectorAll('.dot')
+      .forEach((dot) => dot.classList.remove('active'));
 
+    document
+      .querySelector(`.dot[data-index="${index}"]`)
+      ?.classList.add('active');
+  }
+
+  function observeSlides() {
+    const slides = document.querySelectorAll('.slide');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = [...slides].indexOf(entry.target);
+            setActiveDot(index);
+          }
+        });
+      },
+      {
+        root: document.querySelector('#slides'),
+        threshold: 0.6,
+      }
+    );
+
+    slides.forEach((slide) => observer.observe(slide));
+  }
+
+  function renderDots() {
+    const dotsContainer = document.querySelector('.dots');
+    dotsContainer.innerHTML = '';
+
+    products.forEach((_, index) => {
+      dotsContainer.insertAdjacentHTML(
+        'beforeend',
+        `<div class="dot" data-index="${index}"></div>`
+      );
+    });
+
+    const dots = document.querySelectorAll('.dot');
+    const slides = document.querySelectorAll('.slide');
+
+    dots.forEach((dot) =>
+      // Trigger scroll towards the product
+      dot.addEventListener('click', () => {
+        const index = Number(dot.dataset.index);
+        const targetSlide = slides[index];
+
+        targetSlide.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'start',
+        });
+      })
+    );
+  }
+
+  function render() {
     products.forEach((product) => {
       const formattedPrice = new Intl.NumberFormat('en-IE', {
         style: 'currency',
@@ -72,7 +130,7 @@ window.addEventListener('DOMContentLoaded', function () {
       <div class="slide" data-product-id=${product.id}>
         <div class="text-container">
         <!-- Text Content -->
-        <h2 class="title" styles="color: ${product.accent}">${product.name}</h2>
+        <h2 class="title" >${product.name}</h2>
         <p class="description">${product.description}</p>
         <p class="price">${formattedPrice}</p>
       <button class="btn" disabled=${product.stock > 0}>
@@ -88,9 +146,13 @@ window.addEventListener('DOMContentLoaded', function () {
       </div>
       `;
 
-      return slides.insertAdjacentHTML('beforeend', html);
+      const slides = document.querySelector('#slides');
+      slides.insertAdjacentHTML('beforeend', html);
     });
   }
 
   render();
+  renderDots();
+  setActiveDot(0);
+  observeSlides();
 });
