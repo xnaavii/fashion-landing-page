@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', function () {
       id: 1,
       name: 'jacket-001',
       description:
-        'A stylish navy jacket with a lightweight design, perfect for everyday wear.',
+        'A stylish jacket with a lightweight design, perfect for everyday wear.',
       price: 299,
       stock: 0,
       image: './assets/sirio-7_ZNLVlJchs-unsplash.jpg',
@@ -50,7 +50,7 @@ window.addEventListener('DOMContentLoaded', function () {
       id: 5,
       name: 'jacket-005',
       description:
-        'Sleek black jacket that combines style and functionality for any occasion.',
+        'Jacket that combines style and functionality for any occasion.',
       price: 299,
       stock: 0,
       image: './assets/jc-gellidon-xDsq3u3ZUqc-unsplash.jpg',
