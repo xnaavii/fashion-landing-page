@@ -37,9 +37,9 @@ window.addEventListener('DOMContentLoaded', function () {
     },
     {
       id: 4,
-      name: 'jeans-004',
+      name: 'leather-004',
       description:
-        'Classic denim jeans with a comfortable fit for everyday use.',
+        'Classic black leather with a comfortable fit for everyday use.',
       price: 199,
       stock: 0,
       image: './assets/dom-hill-JqZlSnI2ctA-unsplash.jpg',
