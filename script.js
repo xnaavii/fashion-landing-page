@@ -40,7 +40,7 @@ window.addEventListener('DOMContentLoaded', function () {
       name: 'jeans-004',
       description:
         'Classic blue denim jeans with a comfortable fit for everyday use.',
-      price: 299,
+      price: 199,
       stock: 0,
       image: './assets/dom-hill-JqZlSnI2ctA-unsplash.jpg',
       accent: '#74c0fc',
@@ -59,42 +59,38 @@ window.addEventListener('DOMContentLoaded', function () {
     },
   ];
 
-  let currentProductIndex = 0;
-
   function render() {
-    const currentProduct = products[currentProductIndex];
-    const activeEl = document.querySelector('.active');
-    if (activeEl) {
-      activeEl.style.backgroundColor = currentProduct.accent;
-    }
-    document.body.style.fontFamily = currentProduct.fontStyle || 'Inter';
+    const slides = document.querySelector('#slides');
 
-    const image = document.querySelector('.image');
-    image.src = currentProduct.image;
+    products.forEach((product) => {
+      const formattedPrice = new Intl.NumberFormat('en-IE', {
+        style: 'currency',
+        currency: 'EUR',
+      }).format(product.price);
 
-    const title = document.querySelector('.title');
-    title.textContent = currentProduct.name;
-    title.style.color = currentProduct?.accent;
+      const html = `
+      <div class="slide" data-product-id=${product.id}>
+        <div class="text-container">
+        <!-- Text Content -->
+        <h2 class="title" styles="color: ${product.accent}">${product.name}</h2>
+        <p class="description">${product.description}</p>
+        <p class="price">${formattedPrice}</p>
+      <button class="btn" disabled=${product.stock > 0}>
+        <small class="stock">${
+          product.stock > 0 ? 'In stock' : 'Out of stock'
+        }</small>
+      </button>
+        </div>
+          <div class="image-container">
+          <!-- Image Content -->
+          <img src="${product.image}" loading="lazy" class="image" />
+        </div>
+      </div>
+      `;
 
-    const description = document.querySelector('.description');
-    description.textContent = currentProduct.description;
-
-    const price = document.querySelector('.price');
-
-    const formattedPrice = new Intl.NumberFormat('en-IE', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(currentProduct.price);
-    price.textContent = formattedPrice;
+      return slides.insertAdjacentHTML('beforeend', html);
+    });
   }
-
-  setInterval(() => {
-    currentProductIndex++;
-    if (currentProductIndex >= products.length) {
-      currentProductIndex = 0;
-    }
-    render();
-  }, 5000);
 
   render();
 });
