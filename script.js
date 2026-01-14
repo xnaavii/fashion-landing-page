@@ -1,6 +1,7 @@
 'use strict';
 
-window.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('DOMContentLoaded', () => {
+  /* ------------------ DATA ------------------ */
   const products = [
     {
       id: 1,
@@ -59,136 +60,175 @@ window.addEventListener('DOMContentLoaded', function () {
     },
   ];
 
-  function setActiveDot(index) {
-    document
-      .querySelectorAll('.dot')
-      .forEach((dot) => dot.classList.remove('active'));
+  /* ------------------ DOM CACHE ------------------ */
+  const slidesContainer = document.querySelector('#slides');
+  const dotsContainer = document.querySelector('.dots');
 
-    document
-      .querySelector(`.dot[data-index="${index}"]`)
-      ?.classList.add('active');
-  }
+  /* ------------------ STATE ------------------ */
+  let activeIndex = 0;
 
-  function observeSlides() {
-    const slides = document.querySelectorAll('.slide');
+  /* ------------------ HELPERS ------------------ */
+  const formatPrice = (value) =>
+    new Intl.NumberFormat('en-IE', {
+      style: 'currency',
+      currency: 'EUR',
+    }).format(value);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = [...slides].indexOf(entry.target);
-            setActiveDot(index);
-          }
-        });
-      },
-      {
-        root: document.querySelector('#slides'),
-        threshold: 0.3,
-      }
-    );
+  const setActiveDot = (index) => {
+    activeIndex = index;
 
-    slides.forEach((slide) => observer.observe(slide));
-  }
-
-  function renderDots() {
-    const dotsContainer = document.querySelector('.dots');
-    dotsContainer.innerHTML = '';
-
-    products.forEach((_, index) => {
-      dotsContainer.insertAdjacentHTML(
-        'beforeend',
-        `<div class="dot" data-index="${index}"></div>`
+    document.querySelectorAll('.dot').forEach((dot) => {
+      dot.classList.toggle('active', Number(dot.dataset.index) === index);
+      dot.setAttribute(
+        'aria-current',
+        Number(dot.dataset.index) === index ? 'true' : 'false'
       );
     });
+  };
 
-    const dots = document.querySelectorAll('.dot');
-    const slides = document.querySelectorAll('.slide');
+  /* ------------------ RENDERING ------------------ */
+  const renderSlides = () => {
+    products.forEach((product, index) => {
+      const isInStock = product.stock > 0;
+      const titleStyle = product.fontStyle
+        ? `style="font-family: ${product.fontStyle};"`
+        : '';
 
-    dots.forEach((dot) =>
-      // Trigger scroll towards the product
-      dot.addEventListener('click', () => {
-        const index = Number(dot.dataset.index);
-        const targetSlide = slides[index];
-        setActiveDot(index);
+      const html = `
+        <div class="slide" data-id="${product.id}" data-index="${index}">
+          <div class="text-container">
+            <h2 class="title" ${titleStyle}>${product.name}</h2>
+            <p class="description">${product.description}</p>
+            <p class="price">${formatPrice(product.price)}</p>
 
-        targetSlide.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'start',
-        });
-      })
-    );
-  }
+            <button class="btn" ${isInStock ? '' : 'disabled'}>
+              <small class="stock">
+                ${isInStock ? 'In stock' : 'Out of stock'}
+              </small>
+            </button>
+          </div>
 
-  function renderNewsletterSlide() {
-    const slides = document.querySelector('#slides');
-
-    const html = `<div class="slide newsletter">
-      <form id="newsletter-form">
-        <header id="newsletter-header">
-          <h3>Subscribe to our newsletter</h3>
-          <p>Be the first to know when our products are in stock.</p>
-        </header>
-        <div class="input-group">
-          <label for="email">Enter you email</label>
-          <input id="email" name="email" placeholder="johndoe@email.com" required autocomplete=true />
+          <div class="image-container">
+            <img
+              src="${product.image}"
+              alt="${product.name}"
+              loading="lazy"
+              class="image"
+            />
+          </div>
         </div>
-        <button type="submit" class="btn">Subscribe</button>
-        </form>
-        <video src="./assets/videos/newsletter-background-video.mp4" autoplay muted loop playsinline></video>
-      </div>  
       `;
 
-    slides.insertAdjacentHTML('beforeend', html);
+      slidesContainer.insertAdjacentHTML('beforeend', html);
+    });
+  };
+
+  const renderNewsletterSlide = () => {
+    const html = `
+      <div class="slide newsletter" data-index="${products.length}">
+        <form id="newsletter-form">
+          <header id="newsletter-header">
+            <h3>Subscribe to our newsletter</h3>
+            <p>Be the first to know when our products are in stock.</p>
+          </header>
+
+          <div class="input-group">
+            <label for="email">Enter your email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="johndoe@email.com"
+              required
+              autocomplete="email"
+            />
+          </div>
+
+          <button type="submit" class="btn">Subscribe</button>
+        </form>
+
+        <video
+          src="./assets/videos/newsletter-background-video.mp4"
+          autoplay
+          muted
+          loop
+          playsinline
+        ></video>
+      </div>
+    `;
+
+    slidesContainer.insertAdjacentHTML('beforeend', html);
 
     const form = document.querySelector('#newsletter-form');
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      document.querySelector('.input-group').innerHTML =
+      form.querySelector('.input-group').innerHTML =
         '<p class="success-message">Thank you for subscribing!</p>';
 
-      document.querySelector('#newsletter-header').remove();
-      document.querySelector('#newsletter-form button').remove();
+      form.querySelector('#newsletter-header').remove();
+      form.querySelector('button').remove();
     });
-  }
+  };
 
-  function render() {
-    products.forEach((product) => {
-      const formattedPrice = new Intl.NumberFormat('en-IE', {
-        style: 'currency',
-        currency: 'EUR',
-      }).format(product.price);
+  const renderDots = () => {
+    dotsContainer.innerHTML = '';
 
-      const html = `
-      <div class="slide" data-id=${product.id}>
-        <div class="text-container">
-        <!-- Text Content -->
-        <h2 class="title" >${product.name}</h2>
-        <p class="description">${product.description}</p>
-        <p class="price">${formattedPrice}</p>
-      <button class="btn" disabled=${product.stock > 0}>
-        <small class="stock">${
-          product.stock > 0 ? 'In stock' : 'Out of stock'
-        }</small>
-      </button>
-        </div>
-          <div class="image-container">
-          <!-- Image Content -->
-          <img src="${product.image}" loading="lazy" class="image" />
-        </div>
-      </div>
-      `;
+    const totalSlides = products.length + 1;
 
-      const slides = document.querySelector('#slides');
-      slides.insertAdjacentHTML('beforeend', html);
+    for (let i = 0; i < totalSlides; i++) {
+      dotsContainer.insertAdjacentHTML(
+        'beforeend',
+        `<button class="dot" data-index="${i}" aria-label="Go to slide ${
+          i + 1
+        }"></button>`
+      );
+    }
+  };
+
+  /* ------------------ INTERACTION ------------------ */
+  const observeSlides = () => {
+    const slides = document.querySelectorAll('.slide');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = Number(entry.target.dataset.index);
+            setActiveDot(index);
+          }
+        });
+      },
+      {
+        root: slidesContainer,
+        threshold: 0.3,
+      }
+    );
+
+    slides.forEach((slide) => observer.observe(slide));
+  };
+
+  dotsContainer.addEventListener('click', (e) => {
+    const dot = e.target.closest('.dot');
+    if (!dot) return;
+
+    const index = Number(dot.dataset.index);
+    const targetSlide = document.querySelector(`.slide[data-index="${index}"]`);
+
+    targetSlide?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'start',
     });
-  }
 
-  render();
+    setActiveDot(index);
+  });
+
+  /* ------------------ INIT ------------------ */
+  renderSlides();
   renderNewsletterSlide();
   renderDots();
-  setActiveDot(0);
+  setActiveDot(activeIndex);
   observeSlides();
 });

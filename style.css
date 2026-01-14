@@ -172,9 +172,9 @@ body {
   position: absolute;
   right: 0;
   top: 50%;
-  translate: -50%;
-  width: 16px;
-  height: 100px;
+  translate: -50% -50%;
+  width: 20px;
+  height: 120px;
   background-color: #21252976;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -192,9 +192,10 @@ body {
 }
 
 .dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   background-color: var(--gray-800);
+  border: none;
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.5s ease;
