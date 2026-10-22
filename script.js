@@ -66,6 +66,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   /* ------------------ STATE ------------------ */
   let activeIndex = 0;
+  const ratios = new Map();
 
   /* ------------------ HELPERS ------------------ */
   const formatPrice = (value) =>
@@ -78,11 +79,16 @@ window.addEventListener('DOMContentLoaded', () => {
     activeIndex = index;
 
     document.querySelectorAll('.dot').forEach((dot) => {
-      dot.classList.toggle('active', Number(dot.dataset.index) === index);
-      dot.setAttribute(
-        'aria-current',
-        Number(dot.dataset.index) === index ? 'true' : 'false'
-      );
+      const isActive = Number(dot.dataset.index) === index;
+      dot.classList.toggle('active', isActive);
+
+      if (isActive) {
+        dot.setAttribute('aria-current', 'true');
+        dot.setAttribute('aria-selected', 'true');
+      } else {
+        dot.removeAttribute('aria-current');
+        dot.setAttribute('aria-selected', 'false');
+      }
     });
   };
 
@@ -180,9 +186,9 @@ window.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < totalSlides; i++) {
       dotsContainer.insertAdjacentHTML(
         'beforeend',
-        `<button class="dot" data-index="${i}" aria-label="Go to slide ${
+        `<button class="dot" data-index="${i}" role="tab" aria-label="Go to slide ${
           i + 1
-        }"></button>`
+        }" aria-selected="false"></button>`
       );
     }
   };
@@ -193,16 +199,29 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const observer = new IntersectionObserver(
       (entries) => {
+        // Keep the latest ratio for every slide so we can always pick the
+        // most visible one, not just the ones that crossed the threshold.
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = Number(entry.target.dataset.index);
-            setActiveDot(index);
+          ratios.set(entry.target, entry.intersectionRatio);
+        });
+
+        let bestSlide = null;
+        let bestRatio = 0;
+
+        ratios.forEach((ratio, slide) => {
+          if (ratio > bestRatio) {
+            bestRatio = ratio;
+            bestSlide = slide;
           }
         });
+
+        if (bestSlide && bestRatio > 0) {
+          setActiveDot(Number(bestSlide.dataset.index));
+        }
       },
       {
         root: slidesContainer,
-        threshold: 0.3,
+        threshold: [0, 0.25, 0.5, 0.75, 1],
       }
     );
 
@@ -218,7 +237,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     targetSlide?.scrollIntoView({
       behavior: 'smooth',
-      block: 'nearest',
+      block: 'start',
       inline: 'start',
     });
 
